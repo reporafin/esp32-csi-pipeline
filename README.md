@@ -10,7 +10,7 @@ The setup is pretty straightforward: two ESP32 boards constantly send packets ba
 
 You can clearly see what's going on just by looking at the data: an empty room shows almost zero change, someone just sitting and breathing makes small slow waves, and someone walking around creates big, fast spikes.
 
-To keep the data clean, the receiver automatically scans all 13 Wi-Fi channels (MAC address) on startup and picks the quietest one so your normal home Wi-Fi doesn't interfere.
+To keep the data clean, the receiver automatically scans all 13 Wi-Fi channels *(MAC address)* on startup and picks the quietest one so your normal home Wi-Fi doesn't interfere.
 
 ## Repository layout
 
@@ -53,7 +53,7 @@ Output is saved as `csi_raw_data.csv` — one row per packet, columns
 
 | Setting | File | Notes |
 |---|---|---|
-| `USE_QUIET_CHANNEL` | `rx_main.cpp` | `true`=quietest channel, `false`=most congested (for interference testing) |
+| `USE_QUIET_CHANNEL` | `rx_main.cpp` | `true`=quietest channel, `false`=most congested |
 | `AP_SSID` / `AP_PASSWORD` | both firmware files | Must match exactly on both boards |
 | `BAUD_RATE` | `capture_csi.py` | Must match `UART_BAUD` in `rx_main.cpp` (460800) |
 
@@ -79,3 +79,5 @@ CSI capture follows the pattern of Espressif's ESP-IDF Wi-Fi CSI examples.
 ## Note
 `AP_PASSWORD` is a fixed test credential for linking the two boards to each
 other — not meant as real security practice.
+
+To figure out which channels are congested, the ESP32 does a quick scan of nearby MAC addresses. It basically counts how many devices are active on each channel and automatically picks the quietest one to use.
