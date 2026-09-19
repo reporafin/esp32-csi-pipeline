@@ -1,0 +1,42 @@
+# REQUIREMENTS
+
+## Capture Script (`csi_capture.py`)
+ 
+Runs on PC. Reads whatever the receiver sends over USB and saves it
+as a CSV.
+ 
+## Setup
+
+Edit near the top of `capture_csi.py`:
+```python
+SERIAL_PORT = 'COM3'    # your receiver's port
+BAUD_RATE = 460800      # must match UART_BAUD in rx_main.cpp
+```
+ 
+**Finding port:**
+- Windows: Device Manager → Ports (COM & LPT)
+- macOS: `ls /dev/cu.*`
+- Linux: `ls /dev/ttyUSB*`
+## Before running
+ 
+1. Receiver powered on and finished its channel scan (check via
+   `idf.py monitor`, then `Ctrl+]` to free the port — only one program can
+   use it at a time).
+2. Transmitter powered on and connected (`TX READY` in its own logs).
+## Running
+ 
+```bash
+python csi_capture.py    # Ctrl+C to stop
+```
+~100 "packets" printed per second of recording. Output saved as
+`csi_raw_data.csv` in the same folder — rename it after each recording
+(e.g. `stationary_raw_1.csv`), since the script overwrites it next run.
+ 
+## Troubleshooting
+ 
+- **"Make sure the ESP-IDF monitor is CLOSED"** : close any open
+  `idf.py monitor` session first.
+- **Connects but nothing captured** : check the transmitter is actually
+  connected; the receiver has nothing to measure without incoming packets.
+- **Occasional skipped/garbled lines** : normal, the script already filters
+  out anything that isn't a clean `CSI_DATA` line.
