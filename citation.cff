@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this firmware or dataset, please cite it as below."
+title: "ESP32 CSI Pipeline: Cognitive Radio Presence Detection"
+authors:
+  - family-names: "Reza"
+    given-names: "Md. Rafiul"
+date-released: 2026-09-20
+url: "https://github.com/reporafin/esp32-csi-pipeline"
