@@ -1,0 +1,47 @@
+# Receiver Firmware (`rx_main.cpp`)
+ 
+The "listening" board. Scans for a quiet Wi-Fi channel, starts its own
+private network, measures CSI on every incoming packet, and streams the
+results over USB.
+ 
+## Sequence
+1. Scans all 13 channels, counts competing networks on each (~few seconds).
+2. Picks the quietest one (or the most crowded — see below).
+3. Starts its own Wi-Fi network on that channel.
+4. Measures CSI on every packet received, streams it over USB as text.
+## Key settings (top of `rx_main.cpp`)
+ 
+```cpp
+#define USE_QUIET_CHANNEL true   // false = pick most congested instead
+#define AP_SSID  "CSI_SENSOR_AP" // must match tx_main.cpp exactly
+#define AP_PASSWORD "csi12345"   // must match tx_main.cpp exactly
+#define UART_BAUD 460800         // must match capture_csi.py
+```
+ 
+## Optional status LEDs
+ 
+| LED | GPIO | Lit when… |
+|---|---|---|
+| Scanning | 18 | Checking all 13 channels at startup |
+| AP Ready | 19 | Network started on chosen channel |
+| Tx Linked | 21 | Transmitter connected and sending |
+ 
+Wire each LED's long leg through a ~220Ω resistor to its GPIO pin, short leg
+to GND. Fully optional — not required for the system to work.
+ 
+## Build & flash
+ 
+```bash
+cd firmware/receiver
+idf.py set-target esp32 && idf.py build
+idf.py -p PORT flash monitor    # wait for "=== SYSTEM READY ==="
+```
+Press `Ctrl+]` to exit before running the Python capture script.
+ 
+## Output format (over USB)
+ 
+```
+CSI_DATA,<packet_count>,<64 comma-separated amplitude values>
+```
+Other lines (periodic status logs) don't start with `CSI_DATA` and are
+ignored automatically by the capture script.
