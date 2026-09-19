@@ -15,10 +15,10 @@ To keep the data clean, the receiver automatically scans all 13 Wi-Fi channels *
 ## Repository layout
 
 ```
-firmware/receiver/      ESP32: channel scan, CSI capture, sends over USB
-firmware/transmitter/   ESP32: connects to receiver, pings it 100×/sec
 capture/                PC script that saves incoming CSI data to CSV
 dataset/                Raw recordings — see dataset/README.md
+firmware/receiver/      ESP32: channel scan, CSI capture, sends over USB
+firmware/transmitter/   ESP32: connects to receiver, pings it 100×/sec
 ```
 
 ## Hardware needed
@@ -39,7 +39,7 @@ cd firmware/transmitter
 idf.py set-target esp32 && idf.py build
 idf.py -p PORT flash monitor        # wait for "TX READY"
  
-# 3. Capture data on your PC (close any open idf.py monitor first)
+# 3. Capture data PC (close any open idf.py monitor first)
 cd capture
 pip install -r requirements.txt
 python capture_csi.py               # Ctrl+C to stop
@@ -67,7 +67,7 @@ Output is saved as `csi_raw_data.csv` — one row per packet, columns
 - **Garbled or missing rows in the CSV** : occasional packet loss is normal;
   the script already filters out non-numeric lines.
 
-  ## License
+## License
 Code: MIT (`LICENSE`). Dataset: CC BY 4.0 (`dataset/README.md`).
 
 ## Citation
