@@ -1,4 +1,4 @@
-# esp32-csi-pipeline
+# ESP-32 Wi-Fi CSI data capture pipeline
 Firmware, Capture Script and Dataset to figure out if a room is empty, if someone is sitting still, or if they are walking around. It only uses Wi-Fi signals— no cameras or wearables needed.
 > This is a part of my undergraduate research project titled *"Cognitive Radio CSI Signal Based Human Presence Detection Framework Using Edge Computing Devices."*
 
